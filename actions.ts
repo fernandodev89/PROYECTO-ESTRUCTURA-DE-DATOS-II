@@ -1,19 +1,15 @@
 //clase para las acciones 
 class Actions{
-    private nameUser:string;
+    private id:number;
     private companyName:string;
     private price:number;
     private quantity:number
 
-    constructor(nameUser:string, companyName:string, price:number, quantity:number){
-        this.nameUser = nameUser;
+    constructor( id:number,companyName:string, price:number, quantity:number){
+        this.id = id;
         this.companyName = companyName;
         this.price = price;
         this.quantity = quantity;
-    }
-
-    public getNameUser(){
-        return this.nameUser;
     }
 
     public getCompanyName(){
