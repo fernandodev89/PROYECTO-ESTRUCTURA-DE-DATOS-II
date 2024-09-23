@@ -72,30 +72,59 @@ export class MinHeap {
         }
     }
 
-    public viewMin():[User,Actions] {
-        return this.heap[1];
+   public searchSale(searchcompra: Actions, i: number): number[] {
+        //fuera de los límites del heap o nodo inexistente
+        if (i > this.n || this.heap[i] === undefined) {
+            return [];
+        }
+        let results: number[] = [];
+
+        if ( this.heap[i][1].getPrice() <= searchcompra.getPrice() && this.heap[i][1].getCompanyName() === searchcompra.getCompanyName()) {
+            results.push(i);  // Almacenar el índice actual, ya que coincide
+        }
+
+        results = results.concat(this.searchSale(searchcompra, i * 2));  // Hijo izquierdo
+        results = results.concat(this.searchSale(searchcompra, (i * 2) + 1));  // Hijo derecho
+
+        return results;
+    }
+
+
+
+    public updateSale():void{
+    }
+
+    public deleteSale(id:number):void{
+        
     }
 
     public viewHeap(): Array<[User,Actions]> {
         return this.heap;
     }
 
-    public viewLength(): number {
+    public viewLength():number{
         return this.heap.length;
     }
 
 }
 
-const compra = new MinHeap(9);
-compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
-compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
+const compra = new MinHeap(7);
+compra.insert(new User('Fercho'),new Actions(18,'Tigo',5,5))
+compra.insert(new User('Duglas'),new Actions(12,'Tigo',44,3))
 compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
 compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
 compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
-
+compra.insert(new User('Dominik'),new Actions(28,'Tigo',54,2))
+compra.insert(new User('Ferpa'),new Actions(33,'claro',99,88))
+compra.insert(new User('Maria'),new Actions(11,'Tigo',87,22))
+compra.insert(new User('Dalia'),new Actions(2,'Tigo',87,533))
+//
+compra.updateSale();
 const valor = compra.viewHeap()
+let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3), 1);
+console.log('Resultados:', searchResult);
+console.log('----------------------------------------------------------------')
 
-console.log(valor)
+const identicos = compra.viewLength()
 //console.log('Este es el valor maximo',compra.getMax())
 //console.log(valor)

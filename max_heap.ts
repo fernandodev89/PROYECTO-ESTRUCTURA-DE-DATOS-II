@@ -86,16 +86,16 @@ export class MaxHeap {
 
 }
 
-const compra = new MaxHeap(9);
-compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
-compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
-compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
-compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
-compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
-
-const valor = compra.viewHeap()
-
-console.log(valor)
+//const compra = new MaxHeap(9);
+//compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
+//compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
+//compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
+//compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
+//compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
+//compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
+//
+//const valor = compra.viewHeap()
+//
+//console.log(valor)
 //console.log('Este es el valor maximo',compra.getMax())
 //console.log(valor)
