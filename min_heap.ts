@@ -1,5 +1,6 @@
 import {Actions} from "./actions";
 import { User } from "./user";
+import { HistoryActions } from "./history";
 export class MinHeap {
     private heap: Array<[User ,Actions]>;
     private n: number; // n = cantidad de elementos insertados
@@ -44,7 +45,7 @@ export class MinHeap {
     }
 
 
-    public getMax():[User,Actions] {
+    public getMin():[User,Actions] {
         if (this.n < 1) {
         throw new Error("Heap underflow"); // Manejo de error si heap está vacío
     }
@@ -72,7 +73,27 @@ export class MinHeap {
         }
     }
 
-   public searchSale(searchcompra: Actions, i: number): number[] {
+    //funcion para realizar la compra directamente si existieran ya ventas con los requerimientos necesarios
+    public makeBuy(buyActions:Actions):void{
+
+        let sameSales = this.searchSale(buyActions);
+        if(sameSales.length > 1){
+            for(const i in sameSales){
+                let index = sameSales[i]
+                if(this.heap[index][1].getQuantityActions() > buyActions.getQuantityActions()){
+                    const newQuantity:number = (this.heap[index][1].getQuantityActions() - buyActions.getQuantityActions());
+                    this.updateSale(index,newQuantity);
+                    break;
+                }else if(this.heap[index][1].getQuantityActions() === buyActions.getQuantityActions()){
+                    this.deleteSale(index);
+                }
+            }
+        }
+
+    }
+
+    //funcion principal para verificar si existe una venta igual a los requerimientos de la compra
+    public searchSale(searchcompra: Actions, i: number=1): number[] {
         //fuera de los límites del heap o nodo inexistente
         if (i > this.n || this.heap[i] === undefined) {
             return [];
@@ -86,16 +107,20 @@ export class MinHeap {
         results = results.concat(this.searchSale(searchcompra, i * 2));  // Hijo izquierdo
         results = results.concat(this.searchSale(searchcompra, (i * 2) + 1));  // Hijo derecho
 
-        return results;
+        return results;//devuelve todas las posiciones donde coinciden
     }
 
 
-
-    public updateSale():void{
+    // se encarga de actualizar la cantidad de acciones si sobraran de alguna venta
+    public updateSale(index:number,quantityNew:number):void{
+        this.heap[index][1].setQuantity(quantityNew);
     }
 
-    public deleteSale(id:number):void{
-        
+    //funcion para eliminar la accion si se llegara a vender por completa 
+    public deleteSale(index:number):[User,Actions]{
+       this.heap[index][1].resetActions();
+       this.swap(index);
+       return this.getMin();
     }
 
     public viewHeap(): Array<[User,Actions]> {
@@ -107,7 +132,7 @@ export class MinHeap {
     }
 
 }
-
+//Para hacer pruebas de la clase
 const compra = new MinHeap(7);
 compra.insert(new User('Fercho'),new Actions(18,'Tigo',5,5))
 compra.insert(new User('Duglas'),new Actions(12,'Tigo',44,3))
@@ -119,12 +144,13 @@ compra.insert(new User('Ferpa'),new Actions(33,'claro',99,88))
 compra.insert(new User('Maria'),new Actions(11,'Tigo',87,22))
 compra.insert(new User('Dalia'),new Actions(2,'Tigo',87,533))
 //
-compra.updateSale();
 const valor = compra.viewHeap()
-let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3), 1);
+//console.log(valor)
+console.log('----------------------------------------------------------------')
+let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3));
 console.log('Resultados:', searchResult);
 console.log('----------------------------------------------------------------')
-
-const identicos = compra.viewLength()
-//console.log('Este es el valor maximo',compra.getMax())
-//console.log(valor)
+//compra.makeBuy(new Actions(12, 'Tigo', 54, 3));
+//compra.deleteSale(8)
+//const identicos = compra.viewLength()
+console.log(valor)

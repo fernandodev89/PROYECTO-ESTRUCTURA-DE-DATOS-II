@@ -27,6 +27,13 @@ class Actions{
     public setQuantity(i:number){
         this.quantity = i;
     }
+
+    public resetActions():void{
+        this.companyName = '';
+        this.price = 0;
+        this.quantity = 0;
+
+    }
     
 
 }
