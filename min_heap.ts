@@ -74,21 +74,76 @@ export class MinHeap {
     }
 
     //funcion para realizar la compra directamente si existieran ya ventas con los requerimientos necesarios
-    public makeBuy(buyActions:Actions):void{
-
+    public makeBuy(buyActions:Actions,nameUserBuy:string):[HistoryActions[],number]{
+        //variable para verificar que se va hacer con las acciones que pasen las condiciones
+        let arrActions : Array<[number,string,number]> = [];
+        //variable para de volver el historial de acciones con exito que se realizaron con la compra
+        let historial:HistoryActions[] = []
+        //variable para verificar que se esten descontando las acciones que se ejecuten
+        let actionsQuantity = buyActions.getQuantityActions()
+        //coincidencias de ventas sobre la compra
         let sameSales = this.searchSale(buyActions);
-        if(sameSales.length > 1){
+        if(sameSales.length >= 1){
             for(const i in sameSales){
                 let index = sameSales[i]
-                if(this.heap[index][1].getQuantityActions() > buyActions.getQuantityActions()){
-                    const newQuantity:number = (this.heap[index][1].getQuantityActions() - buyActions.getQuantityActions());
-                    this.updateSale(index,newQuantity);
-                    break;
-                }else if(this.heap[index][1].getQuantityActions() === buyActions.getQuantityActions()){
-                    this.deleteSale(index);
+                if(actionsQuantity>0){
+                    //si las acciones de la venta son mayores a la de la compra
+                    if(this.heap[index][1].getQuantityActions() > actionsQuantity) {
+                        let quantityDefault = this.heap[index][1].getQuantityActions()
+                        const newQuantity:number = (this.heap[index][1].getQuantityActions() - buyActions.getQuantityActions());
+                        arrActions.push([index,'update',newQuantity]);
+                        actionsQuantity = 0
+                        //variables para realizar el historial si la compra fue realizada exitosamente
+                        let name: string = this.heap[index][1].getCompanyName()
+                        let price: number = this.heap[index][1].getPrice()
+                        let quantityHistori = quantityDefault - newQuantity;
+                        let usuario1 = nameUserBuy
+                        let usuario2 = this.heap[index][0].getName()
+                        const newHistory:HistoryActions = new HistoryActions(name,price,quantityHistori,usuario1,usuario2)
+                        historial.push(newHistory);
+                        break;
+                    // si las acciones son iguales
+                    }else if(this.heap[index][1].getQuantityActions() === actionsQuantity){
+                        actionsQuantity =0 
+                        //variables para realizar el historial si la compra fue realizada exitosamente
+                        let name: string = this.heap[index][1].getCompanyName()
+                        let price: number = this.heap[index][1].getPrice()
+                        let quantityHistori = this.heap[index][1].getQuantityActions()
+                        let usuario1 = nameUserBuy
+                        let usuario2 = this.heap[index][0].getName()
+                        const newHistory:HistoryActions = new HistoryActions(name,price,quantityHistori,usuario1,usuario2)
+                        historial.push(newHistory);
+                        arrActions.push([index,'delete',0]);
+                        break
+                    // si las acciones de la venta son menores que la de la compra
+                    }else if(this.heap[index][1].getQuantityActions() < actionsQuantity){
+                        actionsQuantity = actionsQuantity - this.heap[index][1].getQuantityActions();
+                        //variables para realizar el historial si la compra fue realizada exitosamente
+                        let name: string = this.heap[index][1].getCompanyName()
+                        let price: number = this.heap[index][1].getPrice()
+                        let quantityHistori = this.heap[index][1].getQuantityActions()
+                        let usuario1 = nameUserBuy
+                        let usuario2 = this.heap[index][0].getName()
+                        const newHistory:HistoryActions = new HistoryActions(name,price,quantityHistori,usuario1,usuario2)
+                        historial.push(newHistory);
+                        arrActions.push([index,'delete',0]);
+                    }
                 }
             }
         }
+
+        //para actualizar o eliminar las acciones que se utilizaron para realizar la compra
+        if(arrActions.length > 0){
+            for(const a in arrActions){
+                if(arrActions[a][1]==='update'){
+                    this.updateSale(arrActions[a][0],arrActions[a][2])
+                }else{
+                    this.deleteSale(arrActions[a][0])
+                }
+            }
+        }
+        //retornamos las transacciones exitosas y si sobra acciones de la compra tambien las mandamos
+        return [historial,actionsQuantity]
 
     }
 
@@ -132,25 +187,26 @@ export class MinHeap {
     }
 
 }
+
+
 //Para hacer pruebas de la clase
-const compra = new MinHeap(7);
-compra.insert(new User('Fercho'),new Actions(18,'Tigo',5,5))
-compra.insert(new User('Duglas'),new Actions(12,'Tigo',44,3))
-compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
-compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
-compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-compra.insert(new User('Dominik'),new Actions(28,'Tigo',54,2))
-compra.insert(new User('Ferpa'),new Actions(33,'claro',99,88))
-compra.insert(new User('Maria'),new Actions(11,'Tigo',87,22))
-compra.insert(new User('Dalia'),new Actions(2,'Tigo',87,533))
-//
-const valor = compra.viewHeap()
+//const compra = new MinHeap(7);
+//compra.insert(new User('Duglas'),new Actions(12,'Tigo',44,3))
+//compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
+//compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
+//compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
+//compra.insert(new User('Dominik'),new Actions(28,'Tigo',54,2))
+//compra.insert(new User('Ferpa'),new Actions(33,'claro',99,88))
+//compra.insert(new User('Maria'),new Actions(11,'Tigo',87,22))
+//compra.insert(new User('Dalia'),new Actions(2,'Tigo',87,533))
+//const valor = compra.viewHeap()
+//console.log('----------------------------------------------------------------')
 //console.log(valor)
-console.log('----------------------------------------------------------------')
-let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3));
-console.log('Resultados:', searchResult);
-console.log('----------------------------------------------------------------')
-//compra.makeBuy(new Actions(12, 'Tigo', 54, 3));
-//compra.deleteSale(8)
-//const identicos = compra.viewLength()
-console.log(valor)
+//console.log('----------------------------------------------------------------')
+//let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3));
+//console.log('Resultados:', searchResult);
+//console.log('----------------------------------------------------------------')
+//const datos = compra.makeBuy(new Actions(1,'Coca Cola',20,80),'Fernando Contreras');
+//console.log(datos)
+//console.log('----------------------------------------------------------------')
+//console.log(valor)

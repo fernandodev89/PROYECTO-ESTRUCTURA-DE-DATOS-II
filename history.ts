@@ -10,6 +10,7 @@ export class HistoryActions{
         this.nameCompany = nameCompany;
         this.priceActions = priceActions;
         this.quantity = quantity;
+        //usuario1(comprador) usuario2(vendedor)
         this.users = [users1, users2];
         this.date = new Date(); 
     }
