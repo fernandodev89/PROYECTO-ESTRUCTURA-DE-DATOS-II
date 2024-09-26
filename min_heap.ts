@@ -188,25 +188,3 @@ export class MinHeap {
 
 }
 
-
-//Para hacer pruebas de la clase
-//const compra = new MinHeap(7);
-//compra.insert(new User('Duglas'),new Actions(12,'Tigo',44,3))
-//compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
-//compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
-//compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-//compra.insert(new User('Dominik'),new Actions(28,'Tigo',54,2))
-//compra.insert(new User('Ferpa'),new Actions(33,'claro',99,88))
-//compra.insert(new User('Maria'),new Actions(11,'Tigo',87,22))
-//compra.insert(new User('Dalia'),new Actions(2,'Tigo',87,533))
-//const valor = compra.viewHeap()
-//console.log('----------------------------------------------------------------')
-//console.log(valor)
-//console.log('----------------------------------------------------------------')
-//let searchResult = compra.searchSale(new Actions(12, 'Tigo', 54, 3));
-//console.log('Resultados:', searchResult);
-//console.log('----------------------------------------------------------------')
-//const datos = compra.makeBuy(new Actions(1,'Coca Cola',20,80),'Fernando Contreras');
-//console.log(datos)
-//console.log('----------------------------------------------------------------')
-//console.log(valor)

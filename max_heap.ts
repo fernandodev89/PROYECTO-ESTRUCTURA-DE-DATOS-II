@@ -13,7 +13,7 @@ export class MaxHeap {
         return this.n == 0;
     }
 
-    public getQuantity(): number{
+    public getQuantityy(): number{
         return this.n;
     }
 
@@ -46,8 +46,8 @@ export class MaxHeap {
 
     public getMax():[User,Actions] {
         if (this.n < 1) {
-        throw new Error("Heap underflow"); // Manejo de error si heap está vacío
-    }
+            throw new Error("Heap vacio"); // Manejo de error si heap está vacío
+        }
 
         let max: [User, Actions] = this.heap[1];
         this.heap[1] = this.heap[this.n];
@@ -72,6 +72,18 @@ export class MaxHeap {
         }
     }
 
+    // se encarga de actualizar la cantidad de acciones si sobraran de alguna venta
+    public updateSale(index:number,quantityNew:number):void{
+        this.heap[index][1].setQuantity(quantityNew);
+    }
+
+    //funcion para eliminar la accion si se llegara a vender por completa 
+    public deleteSale(index:number):[User,Actions]{
+       this.heap[index][1].resetActions();
+       this.swap(index);
+       return this.getMax();
+    }
+
     public viewMax():[User,Actions] {
         return this.heap[1];
     }
@@ -86,16 +98,16 @@ export class MaxHeap {
 
 }
 
-//const compra = new MaxHeap(9);
-//compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
-//compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
-//compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
-//compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
-//compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-//compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
+const compra = new MaxHeap(9);
+compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
+compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
+compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
+compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
+compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
+compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
 //
-//const valor = compra.viewHeap()
+const valor = compra.getMax()
 //
-//console.log(valor)
+console.log(valor)
 //console.log('Este es el valor maximo',compra.getMax())
 //console.log(valor)
