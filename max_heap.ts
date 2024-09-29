@@ -44,9 +44,9 @@ export class MaxHeap {
     }
 
 
-    public getMax():[User,Actions] {
+    public getMax():[User,Actions] | null {
         if (this.n < 1) {
-            throw new Error("Heap vacio"); // Manejo de error si heap está vacío
+            return null; // Manejo de error si heap está vacío
         }
 
         let max: [User, Actions] = this.heap[1];
@@ -77,11 +77,15 @@ export class MaxHeap {
         this.heap[index][1].setQuantity(quantityNew);
     }
 
-    //funcion para eliminar la accion si se llegara a vender por completa 
-    public deleteSale(index:number):[User,Actions]{
+    //funcion para eliminar la accion si se llegara a vender por completo 
+    public deleteSale(index:number):[User,Actions] | null{
        this.heap[index][1].resetActions();
        this.swap(index);
        return this.getMax();
+    }
+
+    public getHeapIndex(index:number):[User,Actions]{
+        return this.heap[index];
     }
 
     public viewMax():[User,Actions] {
@@ -98,16 +102,3 @@ export class MaxHeap {
 
 }
 
-const compra = new MaxHeap(9);
-compra.insert(new User('Fercho'),new Actions(18,'Tigo',45,5))
-compra.insert(new User('Duglas'),new Actions(12,'Claro',44,3))
-compra.insert(new User('Medina'),new Actions(1,'Coca Cola',20,4))
-compra.insert(new User('Portillo'),new Actions(23,'Grapete',22,4))
-compra.insert(new User('Afre'),new Actions(89,'India Quiche',99,4))
-compra.insert(new User('Dominik'),new Actions(83,'Shucos El pepe',5,4))
-//
-const valor = compra.getMax()
-//
-console.log(valor)
-//console.log('Este es el valor maximo',compra.getMax())
-//console.log(valor)

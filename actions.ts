@@ -34,6 +34,10 @@ class Actions{
         this.quantity = 0;
 
     }
+
+    public viewAction():void{
+        console.log(`Nombre de al compañia: ${this.companyName}\nPrecio: ${this.price}\nCantidad: ${this.quantity}`);
+    }
     
 
 }

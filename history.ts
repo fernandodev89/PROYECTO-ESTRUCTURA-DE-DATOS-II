@@ -16,6 +16,6 @@ export class HistoryActions{
     }
 
     public viewHistory():void{
-        console.log(`Nombre de la compania: ${this.nameCompany} \nPrecio por accion${this.priceActions}\nCantidad de acciones: ${this.quantity}\nUsuarios involucrados: ${this.users[0]} | ${this.users[1]}\nFecha: ${this.date.toISOString().split('T')[0]}`)
+        console.log(`| Nombre de la compania: ${this.nameCompany} \n| Precio por accion: ${this.priceActions}\n| Cantidad de acciones: ${this.quantity}\n| Usuarios involucrados: ${this.users[0]} | ${this.users[1]}\n| Fecha: ${this.date.toISOString().split('T')[0]}`)
     }
 }

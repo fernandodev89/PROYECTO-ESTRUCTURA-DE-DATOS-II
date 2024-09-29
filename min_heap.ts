@@ -45,9 +45,9 @@ export class MinHeap {
     }
 
 
-    public getMin():[User,Actions] {
+    public getMin():[User,Actions] | null {
         if (this.n < 1) {
-        throw new Error("Heap underflow"); // Manejo de error si heap está vacío
+        return null; // Manejo de error si heap está vacío
     }
 
         let max: [User, Actions] = this.heap[1];
@@ -172,7 +172,7 @@ export class MinHeap {
     }
 
     //funcion para eliminar la accion si se llegara a vender por completa 
-    public deleteSale(index:number):[User,Actions]{
+    public deleteSale(index:number):[User,Actions] | null{
        this.heap[index][1].resetActions();
        this.swap(index);
        return this.getMin();
